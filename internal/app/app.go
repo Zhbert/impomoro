@@ -24,8 +24,13 @@
 
 package app
 
-import "fmt"
+import (
+	"fmt"
+	"impomoro/internal/gui/tray"
+	"time"
+)
 
 func Run() {
-	fmt.Println("Application started at...")
+	fmt.Println("Application started on " + time.Now().Format("2 Jan 2006 at 15:04:05"))
+	tray.StartTrayApp()
 }
