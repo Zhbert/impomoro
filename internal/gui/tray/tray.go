@@ -1,31 +1,36 @@
 /*
- *  MIT License
+ * MIT License
  *
- *  Copyright (c) 2023 Konstantin Nezhbert
+ * Copyright (c) 2023 Konstantin Nezhbert
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 package tray
 
 import (
 	"fmt"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/driver/desktop"
+	"fyne.io/fyne/v2/theme"
+	"fyne.io/fyne/v2/widget"
 	"github.com/getlantern/systray"
 	"impomoro/internal/services/time_services"
 	"time"
@@ -34,7 +39,7 @@ import (
 var tomatoTime = 1500
 var quitChan = make(chan bool)
 
-func StartTrayApp() {
+func StartTrayAppOld() {
 	systray.Run(onReady, onExit)
 }
 
@@ -87,4 +92,26 @@ func onReady() {
 func onExit() {
 	fmt.Println("Application stopped on " + time.Now().Format("2 Jan 2006 at 15:04:05"))
 	close(quitChan)
+}
+
+func StartTrayApp() {
+	a := app.New()
+	w := a.NewWindow("SysTray")
+
+	if desk, ok := a.(desktop.App); ok {
+		m := fyne.NewMenu("MyApp",
+			fyne.NewMenuItem("Show", func() {
+				w.Show()
+			}))
+		desk.SetSystemTrayMenu(m)
+	}
+
+	w.SetContent(widget.NewLabel("Fyne System Tray"))
+	w.SetCloseIntercept(func() {
+		w.Hide()
+	})
+
+	w.SetIcon(theme.SettingsIcon())
+
+	w.ShowAndRun()
 }

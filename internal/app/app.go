@@ -26,11 +26,11 @@ package app
 
 import (
 	"fmt"
-	"impomoro/internal/gui/tray"
+	"impomoro/internal/gui/main_window"
 	"time"
 )
 
 func Run() {
 	fmt.Println("Application started on " + time.Now().Format("2 Jan 2006 at 15:04:05"))
-	tray.StartTrayApp()
+	main_window.StartMainWindow()
 }
