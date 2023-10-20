@@ -30,6 +30,7 @@ import (
 	"fyne.io/fyne/v2/cmd/fyne_demo/data"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/driver/desktop"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"log"
@@ -42,24 +43,34 @@ func StartMainWindow() {
 	window := app.NewWindow("impomoro")
 
 	content := container.NewPadded()
-	firstString := container.NewVBox()
-	btnString := container.NewHBox()
+	verticalBoxLayout := container.NewVBox()
+	buttonsLineLayout := container.NewHBox()
+
 	startButton := widget.NewButton("START", func() {
 		log.Println("START button pressed")
 	})
-	btnString.Add(startButton)
 	stopButton := widget.NewButton("STOP", func() {
 		log.Println("STOP button pressed")
 	})
-	btnString.Add(stopButton)
 	pauseButton := widget.NewButton("PAUSE", func() {
 		log.Println("STOP button pressed")
 	})
-	btnString.Add(pauseButton)
-	firstString.Add(btnString)
-	content.Add(firstString)
+
+	timeLabel := widget.NewLabel("25:00")
+	timeLabel.TextStyle.Bold = true
+	timeLabel.Alignment = fyne.TextAlign(2)
+
+	buttonsLineLayout.Add(startButton)
+	buttonsLineLayout.Add(pauseButton)
+	buttonsLineLayout.Add(stopButton)
+	buttonsLineLayout.Add(layout.NewSpacer())
+	buttonsLineLayout.Add(timeLabel)
+
+	verticalBoxLayout.Add(buttonsLineLayout)
+
+	content.Add(verticalBoxLayout)
 	window.SetContent(content)
-	window.Resize(fyne.NewSize(640, 200))
+	window.Resize(fyne.NewSize(400, 150))
 	window.ShowAndRun()
 }
 
