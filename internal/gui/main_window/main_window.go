@@ -29,40 +29,63 @@ import (
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/cmd/fyne_demo/data"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/layout"
-	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
+	"impomoro/internal/gui/tray"
+	"impomoro/internal/services/time_services"
 	"log"
+	"time"
 )
+
+var tomatoTime = 1500
+var quitChan = make(chan bool)
 
 func StartMainWindow() {
 	app := app.New()
 	app.SetIcon(data.FyneLogo)
-	makeTray(app)
+	tray.MakeTray(app)
 	window := app.NewWindow("impomoro")
 
 	content := container.NewPadded()
 	verticalBoxLayout := container.NewVBox()
 	buttonsLineLayout := container.NewHBox()
 
+	timeLabel := widget.NewLabel("25:00")
+	timeLabel.TextStyle.Bold = true
+	timeLabel.Alignment = fyne.TextAlign(2)
+
 	startButton := widget.NewButton("START", func() {
-		log.Println("START button pressed")
+		log.Println("Timer started")
+		go func(curTime *int, label *widget.Label) {
+			for range time.Tick(time.Second) {
+				if *curTime > 0 {
+					select {
+					case <-quitChan:
+						log.Println("Timer stopped")
+						return
+					default:
+						*curTime--
+						label.Text = time_services.SecondsToMinutes(tomatoTime)
+						label.Refresh()
+					}
+				} else {
+					return
+				}
+			}
+		}(&tomatoTime, timeLabel)
 	})
 	stopButton := widget.NewButton("STOP", func() {
 		log.Println("STOP button pressed")
+		quitChan <- true
 	})
 	pauseButton := widget.NewButton("PAUSE", func() {
 		log.Println("STOP button pressed")
 	})
 
-	timeLabel := widget.NewLabel("25:00")
-	timeLabel.TextStyle.Bold = true
-	timeLabel.Alignment = fyne.TextAlign(2)
-
 	buttonsLineLayout.Add(startButton)
 	buttonsLineLayout.Add(pauseButton)
 	buttonsLineLayout.Add(stopButton)
+
 	buttonsLineLayout.Add(layout.NewSpacer())
 	buttonsLineLayout.Add(timeLabel)
 
@@ -72,18 +95,4 @@ func StartMainWindow() {
 	window.SetContent(content)
 	window.Resize(fyne.NewSize(400, 150))
 	window.ShowAndRun()
-}
-
-func makeTray(a fyne.App) {
-	if desk, ok := a.(desktop.App); ok {
-		h := fyne.NewMenuItem("Hello", func() {})
-		h.Icon = theme.HomeIcon()
-		menu := fyne.NewMenu("Hello World", h)
-		h.Action = func() {
-			log.Println("System tray menu tapped")
-			h.Label = "Welcome"
-			menu.Refresh()
-		}
-		desk.SetSystemTrayMenu(menu)
-	}
 }

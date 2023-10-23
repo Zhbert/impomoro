@@ -25,93 +25,22 @@
 package tray
 
 import (
-	"fmt"
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/theme"
-	"fyne.io/fyne/v2/widget"
-	"github.com/getlantern/systray"
-	"impomoro/internal/services/time_services"
-	"time"
+	"log"
 )
 
-var tomatoTime = 1500
-var quitChan = make(chan bool)
-
-func StartTrayAppOld() {
-	systray.Run(onReady, onExit)
-}
-
-func onReady() {
-	systray.SetTitle(time_services.SecondsToMinutes(tomatoTime))
-	startItem := systray.AddMenuItem("Start", "Start or continue a tomato")
-	pauseItem := systray.AddMenuItem("Pause", "Suspend the tomato")
-	pauseItem.Disable()
-	stopItem := systray.AddMenuItem("Stop", "Stop the tomato")
-	systray.AddSeparator()
-	exitItem := systray.AddMenuItem("Exit", "Close the application")
-
-	go func() {
-		for {
-			select {
-			case <-exitItem.ClickedCh:
-				systray.Quit()
-			case <-startItem.ClickedCh:
-				fmt.Printf("Tomato is launched at %s o'clock\n", time.Now().Format("15:04:05"))
-				startItem.Disable()
-				pauseItem.Enable()
-				go func(curTime *int) {
-					for start := *curTime; start != 0; start-- {
-						select {
-						case <-quitChan:
-							return
-						default:
-							time.Sleep(1 * time.Second)
-							*curTime--
-							systray.SetTitle(time_services.SecondsToMinutes(*curTime))
-						}
-					}
-				}(&tomatoTime)
-			case <-pauseItem.ClickedCh:
-				fmt.Printf("Tomato is paused at %s o'clock\n", time.Now().Format("15:04:05"))
-				quitChan <- true
-				pauseItem.Disable()
-				startItem.Enable()
-			case <-stopItem.ClickedCh:
-				fmt.Printf("Tomato is stopped at %s o'clock\n", time.Now().Format("15:04:05"))
-				quitChan <- true
-				startItem.Enable()
-				tomatoTime = 1500
-				systray.SetTitle(time_services.SecondsToMinutes(tomatoTime))
-			}
-		}
-	}()
-}
-
-func onExit() {
-	fmt.Println("Application stopped on " + time.Now().Format("2 Jan 2006 at 15:04:05"))
-	close(quitChan)
-}
-
-func StartTrayApp() {
-	a := app.New()
-	w := a.NewWindow("SysTray")
-
+func MakeTray(a fyne.App) {
 	if desk, ok := a.(desktop.App); ok {
-		m := fyne.NewMenu("MyApp",
-			fyne.NewMenuItem("Show", func() {
-				w.Show()
-			}))
-		desk.SetSystemTrayMenu(m)
+		h := fyne.NewMenuItem("Hello", func() {})
+		h.Icon = theme.HomeIcon()
+		menu := fyne.NewMenu("Hello World", h)
+		h.Action = func() {
+			log.Println("System tray menu tapped")
+			h.Label = "Welcome"
+			menu.Refresh()
+		}
+		desk.SetSystemTrayMenu(menu)
 	}
-
-	w.SetContent(widget.NewLabel("Fyne System Tray"))
-	w.SetCloseIntercept(func() {
-		w.Hide()
-	})
-
-	w.SetIcon(theme.SettingsIcon())
-
-	w.ShowAndRun()
 }
