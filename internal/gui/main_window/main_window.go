@@ -54,8 +54,39 @@ func StartMainWindow() {
 	timeLabel.TextStyle.Bold = true
 	timeLabel.Alignment = fyne.TextAlign(2)
 
-	startButton := widget.NewButton("START", func() {
+	stopButton := widget.NewButton("STOP", nil)
+	stopButton.Disable()
+
+	pauseButton := widget.NewButton("PAUSE", nil)
+	pauseButton.Disable()
+
+	startButton := widget.NewButton("START", nil)
+
+	stopButton.OnTapped = func() {
+		log.Println("STOP button pressed")
+		if !pauseButton.Disabled() {
+			quitChan <- true
+		}
+		stopButton.Disable()
+		pauseButton.Disable()
+
+		tomatoTime = 1500
+		timeLabel.Text = time_services.SecondsToMinutes(tomatoTime)
+		timeLabel.Refresh()
+	}
+
+	pauseButton.OnTapped = func() {
+		log.Println("PAUSE button pressed")
+		pauseButton.Disable()
+		quitChan <- true
+	}
+
+	startButton.OnTapped = func() {
 		log.Println("Timer started")
+
+		stopButton.Enable()
+		pauseButton.Enable()
+
 		go func(curTime *int, label *widget.Label) {
 			for range time.Tick(time.Second) {
 				if *curTime > 0 {
@@ -73,14 +104,7 @@ func StartMainWindow() {
 				}
 			}
 		}(&tomatoTime, timeLabel)
-	})
-	stopButton := widget.NewButton("STOP", func() {
-		log.Println("STOP button pressed")
-		quitChan <- true
-	})
-	pauseButton := widget.NewButton("PAUSE", func() {
-		log.Println("STOP button pressed")
-	})
+	}
 
 	buttonsLineLayout.Add(startButton)
 	buttonsLineLayout.Add(pauseButton)
