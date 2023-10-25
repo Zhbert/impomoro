@@ -27,10 +27,10 @@ package main_window
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/cmd/fyne_demo/data"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
+	"impomoro/internal/gui/resources"
 	"impomoro/internal/gui/tray"
 	"impomoro/internal/services/time_services"
 	"log"
@@ -41,10 +41,10 @@ var tomatoTime = 1500
 var quitChan = make(chan bool)
 
 func StartMainWindow() {
-	app := app.New()
-	app.SetIcon(data.FyneLogo)
-	tray.MakeTray(app)
-	window := app.NewWindow("impomoro")
+	application := app.New()
+	application.SetIcon(resources.TomatoIcon)
+	tray.MakeTray(application)
+	window := application.NewWindow("impomoro")
 
 	content := container.NewPadded()
 	verticalBoxLayout := container.NewVBox()
