@@ -41,10 +41,10 @@ var tomatoTime = 1500
 var quitChan = make(chan bool)
 
 func StartMainWindow() {
-	app := app.New()
-	app.SetIcon(data.FyneLogo)
-	tray.MakeTray(app)
-	window := app.NewWindow("impomoro")
+	application := app.New()
+	application.SetIcon(data.FyneLogo)
+	tray.MakeTray(application)
+	window := application.NewWindow("impomoro")
 
 	content := container.NewPadded()
 	verticalBoxLayout := container.NewVBox()
