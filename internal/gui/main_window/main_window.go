@@ -62,6 +62,10 @@ func StartMainWindow() {
 
 	startButton := widget.NewButton("START", nil)
 
+	progress := widget.NewProgressBar()
+	progress.SetValue(0)
+	progress.Max = float64(tomatoTime)
+
 	stopButton.OnTapped = func() {
 		log.Println("STOP button pressed")
 		if !pauseButton.Disabled() {
@@ -73,6 +77,7 @@ func StartMainWindow() {
 		tomatoTime = 1500
 		timeLabel.Text = time_services.SecondsToMinutes(tomatoTime)
 		timeLabel.Refresh()
+		progress.SetValue(0)
 	}
 
 	pauseButton.OnTapped = func() {
@@ -87,7 +92,9 @@ func StartMainWindow() {
 		stopButton.Enable()
 		pauseButton.Enable()
 
-		go func(curTime *int, label *widget.Label) {
+		progress.SetValue(float64(tomatoTime))
+
+		go func(curTime *int, label *widget.Label, progress *widget.ProgressBar) {
 			for range time.Tick(time.Second) {
 				if *curTime > 0 {
 					select {
@@ -98,17 +105,21 @@ func StartMainWindow() {
 						*curTime--
 						label.Text = time_services.SecondsToMinutes(tomatoTime)
 						label.Refresh()
+						progress.SetValue(float64(*curTime))
 					}
 				} else {
 					return
 				}
 			}
-		}(&tomatoTime, timeLabel)
+		}(&tomatoTime, timeLabel, progress)
 	}
 
 	buttonsLineLayout.Add(startButton)
 	buttonsLineLayout.Add(pauseButton)
 	buttonsLineLayout.Add(stopButton)
+
+	buttonsLineLayout.Add(layout.NewSpacer())
+	buttonsLineLayout.Add(progress)
 
 	buttonsLineLayout.Add(layout.NewSpacer())
 	buttonsLineLayout.Add(timeLabel)
