@@ -43,8 +43,10 @@ var quitChan = make(chan bool)
 func StartMainWindow() {
 	application := app.New()
 	application.SetIcon(resources.TomatoIcon)
-	tray.MakeTray(application)
+
 	window := application.NewWindow("impomoro")
+
+	tray.MakeTray(application, window)
 
 	content := container.NewPadded()
 	verticalBoxLayout := container.NewVBox()
@@ -127,7 +129,16 @@ func StartMainWindow() {
 	verticalBoxLayout.Add(buttonsLineLayout)
 
 	content.Add(verticalBoxLayout)
+
 	window.SetContent(content)
-	window.Resize(fyne.NewSize(400, 150))
+	window.Resize(fyne.NewSize(400, 100))
+
+	window.CenterOnScreen()
+
+	window.SetCloseIntercept(func() {
+		window.Hide()
+	})
+
+	window.SetOnClosed(window.Hide)
 	window.ShowAndRun()
 }
