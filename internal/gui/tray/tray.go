@@ -35,9 +35,14 @@ func MakeTray(a fyne.App, w fyne.Window) {
 			w.Show()
 		})
 
+		hideItem := fyne.NewMenuItem("Hide", func() {
+			w.Hide()
+		})
+
 		menu := fyne.NewMenu("impomoro")
 
 		menu.Items = append(menu.Items, showItem)
+		menu.Items = append(menu.Items, hideItem)
 
 		desk.SetSystemTrayMenu(menu)
 	}
