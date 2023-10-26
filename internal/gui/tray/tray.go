@@ -27,20 +27,18 @@ package tray
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/driver/desktop"
-	"fyne.io/fyne/v2/theme"
-	"log"
 )
 
-func MakeTray(a fyne.App) {
+func MakeTray(a fyne.App, w fyne.Window) {
 	if desk, ok := a.(desktop.App); ok {
-		h := fyne.NewMenuItem("Hello", func() {})
-		h.Icon = theme.HomeIcon()
-		menu := fyne.NewMenu("Hello World", h)
-		h.Action = func() {
-			log.Println("System tray menu tapped")
-			h.Label = "Welcome"
-			menu.Refresh()
-		}
+		showItem := fyne.NewMenuItem("Show", func() {
+			w.Show()
+		})
+
+		menu := fyne.NewMenu("impomoro")
+
+		menu.Items = append(menu.Items, showItem)
+
 		desk.SetSystemTrayMenu(menu)
 	}
 }
