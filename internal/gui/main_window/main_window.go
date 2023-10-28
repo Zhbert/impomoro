@@ -121,12 +121,13 @@ func StartMainWindow() {
 	buttonsLineLayout.Add(stopButton)
 
 	buttonsLineLayout.Add(layout.NewSpacer())
-	buttonsLineLayout.Add(progress)
-
-	buttonsLineLayout.Add(layout.NewSpacer())
 	buttonsLineLayout.Add(timeLabel)
 
 	verticalBoxLayout.Add(buttonsLineLayout)
+
+	pBarMaxLayout := container.NewStack()
+	pBarMaxLayout.Add(progress)
+	verticalBoxLayout.Add(pBarMaxLayout)
 
 	content.Add(verticalBoxLayout)
 
