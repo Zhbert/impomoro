@@ -32,6 +32,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 	"impomoro/internal/gui/resources"
 	"impomoro/internal/gui/tray"
+	"impomoro/internal/services/notification_service"
 	"impomoro/internal/services/time_services"
 	"log"
 	"time"
@@ -110,6 +111,7 @@ func StartMainWindow() {
 						progress.SetValue(float64(*curTime))
 					}
 				} else {
+					notification_service.ShowNotification("The tomato is complete!", "Take a break.")
 					return
 				}
 			}
