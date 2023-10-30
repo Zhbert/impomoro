@@ -22,14 +22,17 @@
  * SOFTWARE.
  */
 
-package app
+package notification_service
 
 import (
-	"impomoro/internal/gui/main_window"
+	"github.com/gen2brain/beeep"
 	"log"
 )
 
-func Run() {
-	log.Println("The application has started")
-	main_window.StartMainWindow()
+func ShowNotification(title string, message string) {
+	err := beeep.Notify(title, message, "assets/information.png")
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("Notification sent: %s — %s\n", title, message)
 }
