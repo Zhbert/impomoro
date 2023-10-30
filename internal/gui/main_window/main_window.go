@@ -58,12 +58,15 @@ func StartMainWindow() {
 	timeLabel.Alignment = fyne.TextAlign(2)
 
 	stopButton := widget.NewButton("STOP", nil)
+	stopButton.SetIcon(resources.StopIcon)
 	stopButton.Disable()
 
 	pauseButton := widget.NewButton("PAUSE", nil)
+	pauseButton.SetIcon(resources.PauseIcon)
 	pauseButton.Disable()
 
 	startButton := widget.NewButton("START", nil)
+	startButton.SetIcon(resources.PlayIcon)
 
 	progress := widget.NewProgressBar()
 	progress.SetValue(0)
