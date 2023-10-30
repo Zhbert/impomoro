@@ -25,12 +25,11 @@
 package app
 
 import (
-	"fmt"
 	"impomoro/internal/gui/main_window"
-	"time"
+	"log"
 )
 
 func Run() {
-	fmt.Println("Application started on " + time.Now().Format("2 Jan 2006 at 15:04:05"))
+	log.Println("The application has started")
 	main_window.StartMainWindow()
 }
