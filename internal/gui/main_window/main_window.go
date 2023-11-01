@@ -35,10 +35,11 @@ import (
 	"impomoro/internal/services/notification_service"
 	"impomoro/internal/services/time_services"
 	"log"
+	"strconv"
 	"time"
 )
 
-var tomatoTime = 1500
+var tomatoTime = getTomatoTime()
 var quitChan = make(chan bool)
 
 func StartMainWindow() {
@@ -53,7 +54,8 @@ func StartMainWindow() {
 	verticalBoxLayout := container.NewVBox()
 	buttonsLineLayout := container.NewHBox()
 
-	timeLabel := widget.NewLabel("25:00")
+	timeLabel := widget.NewLabel(strconv.Itoa(getTomatoTime()))
+	timeLabel.Refresh()
 	timeLabel.TextStyle.Bold = true
 	timeLabel.Alignment = fyne.TextAlign(2)
 
@@ -79,8 +81,9 @@ func StartMainWindow() {
 		}
 		stopButton.Disable()
 		pauseButton.Disable()
+		startButton.Enable()
 
-		tomatoTime = 1500
+		tomatoTime = getTomatoTime()
 		timeLabel.Text = time_services.SecondsToMinutes(tomatoTime)
 		timeLabel.Refresh()
 		progress.SetValue(0)
@@ -89,6 +92,7 @@ func StartMainWindow() {
 	pauseButton.OnTapped = func() {
 		log.Println("PAUSE button pressed")
 		pauseButton.Disable()
+		startButton.Enable()
 		quitChan <- true
 	}
 
@@ -97,6 +101,7 @@ func StartMainWindow() {
 
 		stopButton.Enable()
 		pauseButton.Enable()
+		startButton.Disable()
 
 		progress.SetValue(float64(tomatoTime))
 
@@ -115,6 +120,10 @@ func StartMainWindow() {
 					}
 				} else {
 					notification_service.ShowNotification("The tomato is complete!", "Take a break.")
+					startButton.Enable()
+					stopButton.Disable()
+					pauseButton.Disable()
+					tomatoTime = getTomatoTime()
 					return
 				}
 			}
@@ -151,4 +160,8 @@ func StartMainWindow() {
 
 	window.SetOnClosed(window.Hide)
 	window.ShowAndRun()
+}
+
+func getTomatoTime() int {
+	return 10
 }
