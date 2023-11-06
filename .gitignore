@@ -28,3 +28,8 @@ out
 
 *.DS_Store
 ._*
+
+# FOSSIL files
+*.fossil
+.fossil-settings
+.fslckout
