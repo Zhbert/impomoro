@@ -29,6 +29,7 @@ import (
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"impomoro/internal/gui/resources"
 	"impomoro/internal/gui/tray"
@@ -146,6 +147,15 @@ func StartMainWindow() {
 	pBarMaxLayout.Add(progress)
 	progressLinePadded.Add(pBarMaxLayout)
 	verticalBoxLayout.Add(progressLinePadded)
+
+	helpLine := container.NewHBox()
+	helpLine.Add(layout.NewSpacer())
+	helpButton := widget.NewButton("", func() {
+		ShowHelpWindow(&window)
+	})
+	helpButton.Icon = theme.QuestionIcon()
+	helpLine.Add(helpButton)
+	verticalBoxLayout.Add(helpLine)
 
 	content.Add(verticalBoxLayout)
 
