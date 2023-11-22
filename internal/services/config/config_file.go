@@ -22,16 +22,42 @@
  * SOFTWARE.
  */
 
-package app
+package config
 
 import (
-	"impomoro/internal/gui/main_window"
-	"impomoro/internal/services/config"
 	"log"
+	"os"
+	"os/user"
+	"path/filepath"
 )
 
-func Run() {
-	log.Println("The application has started")
-	config.DetectConfigFile()
-	main_window.StartMainWindow()
+func DetectConfigFile() bool {
+	usr, err := user.Current()
+	if err != nil {
+		log.Fatal(err)
+	}
+	configPath := filepath.Join(usr.HomeDir, ".impomoro")
+	_, err = os.Stat(configPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			log.Println("Config file does not exist. Creating...")
+			err = os.MkdirAll(configPath, 0777)
+			if err != nil {
+				log.Printf("Can't create config dir: %s\n", configPath)
+				return false
+			}
+		}
+	} else {
+		confFilePath := filepath.Join(configPath, "/config")
+		_, err = os.Stat(confFilePath)
+		if err != nil {
+			f, fileErr := os.Create(confFilePath)
+			if fileErr != nil {
+				log.Printf("Can't create config file: %s\n", confFilePath)
+				return false
+			}
+			defer f.Close()
+		}
+	}
+	return true
 }
