@@ -25,18 +25,33 @@
 package config
 
 import (
+	"gopkg.in/yaml.v3"
+	"impomoro/internal/services/config/structs"
 	"log"
 	"os"
 	"os/user"
 	"path/filepath"
 )
 
-func DetectConfigFile() bool {
+/******************************************************************************
+* Contents of the configuration file                                          *
+******************************************************************************/
+
+const (
+	folderName = ".impomoro"
+	fileName   = "config.yml"
+)
+
+/******************************************************************************
+* Creating a default configuration file                                       *
+******************************************************************************/
+
+func DetectConfigFile() {
 	usr, err := user.Current()
 	if err != nil {
 		log.Fatal(err)
 	}
-	configPath := filepath.Join(usr.HomeDir, ".impomoro")
+	configPath := filepath.Join(usr.HomeDir, folderName)
 	_, err = os.Stat(configPath)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -44,20 +59,40 @@ func DetectConfigFile() bool {
 			err = os.MkdirAll(configPath, 0777)
 			if err != nil {
 				log.Printf("Can't create config dir: %s\n", configPath)
-				return false
 			}
 		}
 	} else {
-		confFilePath := filepath.Join(configPath, "/config")
+		confFilePath := filepath.Join(configPath, fileName)
 		_, err = os.Stat(confFilePath)
 		if err != nil {
-			f, fileErr := os.Create(confFilePath)
-			if fileErr != nil {
-				log.Printf("Can't create config file: %s\n", confFilePath)
-				return false
-			}
-			defer f.Close()
+			createDefaultConfig(confFilePath)
 		}
 	}
-	return true
 }
+
+func createDefaultConfig(confFilePath string) {
+	file, err := os.OpenFile(confFilePath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
+	if err != nil {
+		log.Fatalf("error opening/creating file: %v", err)
+	}
+	defer file.Close()
+
+	enc := yaml.NewEncoder(file)
+
+	err = enc.Encode(getDefaultConfigParameters())
+	if err != nil {
+		log.Fatalf("error encoding: %v", err)
+	}
+
+}
+
+func getDefaultConfigParameters() structs.ConfigOptions {
+	return structs.ConfigOptions{
+		LTime:  1500,
+		ShTime: 300,
+	}
+}
+
+/******************************************************************************
+* Getting data from a configuration file                                      *
+******************************************************************************/
