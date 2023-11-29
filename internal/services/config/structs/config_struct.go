@@ -22,16 +22,15 @@
  * SOFTWARE.
  */
 
-package app
+package structs
 
-import (
-	"impomoro/internal/gui/main_window"
-	"impomoro/internal/services/config"
-	"log"
-)
-
-func Run() {
-	log.Println("The application has started")
-	config.DetectConfigFile()
-	main_window.StartMainWindow()
+type ConfigOptions struct {
+	Display struct {
+		Width  int `yaml:"width"`
+		Height int `yaml:"height"`
+	} `yaml:"display"`
+	Time struct {
+		LongTime  int `yaml:"longTime"`
+		ShortTime int `yaml:"shortTime"`
+	} `yaml:"time"`
 }

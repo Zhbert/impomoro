@@ -33,15 +33,16 @@ import (
 	"fyne.io/fyne/v2/widget"
 	"impomoro/internal/gui/resources"
 	"impomoro/internal/gui/tray"
+	"impomoro/internal/services/config"
 	"impomoro/internal/services/notification_service"
 	"impomoro/internal/services/time_services"
 	"log"
-	"strconv"
 	"time"
 )
 
 var tomatoTime = getTomatoTime()
 var quitChan = make(chan bool)
+var confOpts = config.GetConfigOptions()
 
 func StartMainWindow() {
 	application := app.New()
@@ -55,7 +56,7 @@ func StartMainWindow() {
 	verticalBoxLayout := container.NewVBox()
 	buttonsLineLayout := container.NewHBox()
 
-	timeLabel := widget.NewLabel(strconv.Itoa(getTomatoTime()))
+	timeLabel := widget.NewLabel(time_services.SecondsToMinutes(getTomatoTime()))
 	timeLabel.Refresh()
 	timeLabel.TextStyle.Bold = true
 	timeLabel.Alignment = fyne.TextAlign(2)
@@ -160,7 +161,7 @@ func StartMainWindow() {
 	content.Add(verticalBoxLayout)
 
 	window.SetContent(content)
-	window.Resize(fyne.NewSize(400, 100))
+	window.Resize(fyne.NewSize(float32(confOpts.Display.Width), float32(confOpts.Display.Height)))
 
 	window.CenterOnScreen()
 
@@ -173,5 +174,5 @@ func StartMainWindow() {
 }
 
 func getTomatoTime() int {
-	return 10
+	return confOpts.Time.LongTime * 60
 }
