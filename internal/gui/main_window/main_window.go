@@ -34,7 +34,7 @@ import (
 	"impomoro/internal/gui/resources"
 	"impomoro/internal/gui/tray"
 	"impomoro/internal/services/config"
-	"impomoro/internal/services/notification_service"
+	"impomoro/internal/services/notifications"
 	"impomoro/internal/services/time_services"
 	"log"
 	"time"
@@ -121,7 +121,7 @@ func StartMainWindow() {
 						progress.SetValue(float64(*curTime))
 					}
 				} else {
-					notification_service.ShowNotification("The tomato is complete!", "Take a break.")
+					notifications.ShowNotification("The tomato is complete!", "Take a break.")
 					startButton.Enable()
 					stopButton.Disable()
 					pauseButton.Disable()

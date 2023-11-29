@@ -22,7 +22,7 @@
  * SOFTWARE.
  ******************************************************************************/
 
-package notification_service
+package notifications
 
 import (
 	"github.com/gen2brain/beeep"
