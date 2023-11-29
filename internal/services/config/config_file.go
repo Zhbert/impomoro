@@ -1,4 +1,4 @@
-/*
+/*******************************************************************************
  * MIT License
  *
  * Copyright (c) 2023 Konstantin Nezhbert
@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- */
+ ******************************************************************************/
 
 package config
 
@@ -34,7 +34,7 @@ import (
 )
 
 /******************************************************************************
-* Contents of the configuration file                                          *
+* Contents of the configuration file
 ******************************************************************************/
 
 const (
@@ -43,7 +43,7 @@ const (
 )
 
 /******************************************************************************
-* Creating a default configuration file                                       *
+* Creating a default configuration file
 ******************************************************************************/
 
 func DetectConfigFile() {
@@ -79,20 +79,55 @@ func createDefaultConfig(confFilePath string) {
 
 	enc := yaml.NewEncoder(file)
 
-	err = enc.Encode(getDefaultConfigParameters())
+	err = enc.Encode(getDefaultConfigStruct())
 	if err != nil {
 		log.Fatalf("error encoding: %v", err)
 	}
 
 }
 
-func getDefaultConfigParameters() structs.ConfigOptions {
+func getDefaultConfigStruct() structs.ConfigOptions {
 	return structs.ConfigOptions{
-		LTime:  1500,
-		ShTime: 300,
+		Display: struct {
+			Width  int `yaml:"width"`
+			Height int `yaml:"height"`
+		}(struct {
+			Width  int
+			Height int
+		}{Width: 400, Height: 100}),
+		Time: struct {
+			LongTime  int `yaml:"longTime"`
+			ShortTime int `yaml:"shortTime"`
+		}(struct {
+			LongTime  int
+			ShortTime int
+		}{LongTime: 25, ShortTime: 5}),
 	}
 }
 
 /******************************************************************************
-* Getting data from a configuration file                                      *
+* Getting data from a configuration file
 ******************************************************************************/
+
+func GetConfigOptions() structs.ConfigOptions {
+	usr, err := user.Current()
+	if err != nil {
+		log.Fatal(err)
+	}
+	configFile := filepath.Join(usr.HomeDir, folderName, fileName)
+
+	var configOpts structs.ConfigOptions
+
+	yamlFile, err := os.ReadFile(configFile)
+	if err != nil {
+		log.Fatal(err)
+		return getDefaultConfigStruct()
+	}
+	err = yaml.Unmarshal(yamlFile, &configOpts)
+	if err != nil {
+		log.Fatal(err)
+		return getDefaultConfigStruct()
+	}
+
+	return configOpts
+}

@@ -25,6 +25,12 @@
 package structs
 
 type ConfigOptions struct {
-	LTime  int
-	ShTime int
+	Display struct {
+		Width  int `yaml:"width"`
+		Height int `yaml:"height"`
+	} `yaml:"display"`
+	Time struct {
+		LongTime  int `yaml:"longTime"`
+		ShortTime int `yaml:"shortTime"`
+	} `yaml:"time"`
 }
