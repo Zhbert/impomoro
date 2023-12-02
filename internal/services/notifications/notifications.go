@@ -1,4 +1,4 @@
-/*
+/*******************************************************************************
  * MIT License
  *
  * Copyright (c) 2023 Konstantin Nezhbert
@@ -20,9 +20,9 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- */
+ ******************************************************************************/
 
-package notification_service
+package notifications
 
 import (
 	"github.com/gen2brain/beeep"
