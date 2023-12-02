@@ -43,6 +43,7 @@ import (
 var tomatoTime = getTomatoTime()
 var quitChan = make(chan bool)
 var confOpts = config.GetConfigOptions()
+var shortPeriod = false
 
 func StartMainWindow() {
 	application := app.New()
@@ -121,11 +122,23 @@ func StartMainWindow() {
 						progress.SetValue(float64(*curTime))
 					}
 				} else {
-					notifications.ShowNotification("The tomato is complete!", "Take a break.")
+					notifications.ShowNotification(getNotificationMessage())
+
 					startButton.Enable()
 					stopButton.Disable()
 					pauseButton.Disable()
+
+					if shortPeriod {
+						shortPeriod = false
+					} else if !shortPeriod {
+						shortPeriod = true
+					}
+
 					tomatoTime = getTomatoTime()
+					label.Text = time_services.SecondsToMinutes(tomatoTime)
+					label.Refresh()
+					progress.Max = float64(tomatoTime)
+
 					return
 				}
 			}
@@ -174,5 +187,17 @@ func StartMainWindow() {
 }
 
 func getTomatoTime() int {
+	if shortPeriod {
+		return confOpts.Time.ShortTime * 60
+	}
 	return confOpts.Time.LongTime * 60
+}
+
+func getNotificationMessage() (string, string) {
+	if shortPeriod {
+		return "The break is complete!", "Go to work!"
+	} else if !shortPeriod {
+		return "The tomato is complete!", "Take a break."
+	}
+	return "", ""
 }
