@@ -32,3 +32,4 @@ var PauseIcon = icons.ResourcePausePng
 var StopIcon = icons.ResourceStopPng
 var PencilIcon = icons.ResourcePencilPng
 var CoffeeIcon = icons.ResourceCoffeePng
+var SuitcaseIcon = icons.ResourceSuitcasePng

@@ -22,18 +22,52 @@
  * SOFTWARE.
  ******************************************************************************/
 
-package notifications
+package config
 
 import (
-	"github.com/gen2brain/beeep"
-	"impomoro/internal/services/config"
+	"bytes"
+	"image"
+	"image/png"
+	"impomoro/internal/gui/resources/icons"
 	"log"
+	"os"
+	"os/user"
+	"path/filepath"
 )
 
-func ShowNotification(title string, message string) {
-	err := beeep.Notify(title, message, config.GetIconPath())
+const iconFileName = "tomato.png"
+
+func CreateMainIcon() {
+	usr, err := user.Current()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
-	log.Printf("Notification sent: %s — %s\n", title, message)
+	configPath := filepath.Join(usr.HomeDir, folderName)
+	_, err = os.Stat(configPath)
+	if err != nil {
+		DetectConfigFile()
+	} else {
+		pathToFile := filepath.Join(configPath, iconFileName)
+
+		img, _, err := image.Decode(bytes.NewReader(icons.ResourceTomatoPng.StaticContent))
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		out, _ := os.Create(pathToFile)
+		defer out.Close()
+
+		err = png.Encode(out, img)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+}
+
+func GetIconPath() string {
+	usr, err := user.Current()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return filepath.Join(usr.HomeDir, folderName, iconFileName)
 }
