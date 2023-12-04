@@ -32,7 +32,6 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"impomoro/internal/gui/resources"
-	"impomoro/internal/gui/tray"
 	"impomoro/internal/services/config"
 	"impomoro/internal/services/notifications"
 	"impomoro/internal/services/time_services"
@@ -53,7 +52,7 @@ func StartMainWindow() {
 
 	window := application.NewWindow("impomoro")
 
-	tray.MakeTray(application, window)
+	// tray.MakeTray(application, window)
 
 	content := container.NewPadded()
 	verticalBoxLayout := container.NewVBox()
@@ -185,11 +184,11 @@ func StartMainWindow() {
 
 	window.CenterOnScreen()
 
-	window.SetCloseIntercept(func() {
-		window.Hide()
-	})
+	// indow.SetCloseIntercept(func() {
+	//	window.Hide()
+	// })
 
-	window.SetOnClosed(window.Hide)
+	// window.SetOnClosed(window.Close)
 	window.ShowAndRun()
 }
 
