@@ -33,5 +33,6 @@ import (
 func Run() {
 	log.Println("The application has started")
 	config.DetectConfigFile()
+	config.CreateMainIcon()
 	main_window.StartMainWindow()
 }
