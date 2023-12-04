@@ -212,5 +212,5 @@ func getStateIcon() *widget.Icon {
 	if shortPeriod {
 		return widget.NewIcon(resources.CoffeeIcon)
 	}
-	return widget.NewIcon(resources.PencilIcon)
+	return widget.NewIcon(resources.SuitcaseIcon)
 }
