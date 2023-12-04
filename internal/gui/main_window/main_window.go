@@ -49,6 +49,8 @@ func StartMainWindow() {
 	application := app.New()
 	application.SetIcon(resources.TomatoIcon)
 
+	stateIcon := getStateIcon()
+
 	window := application.NewWindow("impomoro")
 
 	tray.MakeTray(application, window)
@@ -130,8 +132,12 @@ func StartMainWindow() {
 
 					if shortPeriod {
 						shortPeriod = false
+						stateIcon.SetResource(resources.PencilIcon)
+						stateIcon.Refresh()
 					} else if !shortPeriod {
 						shortPeriod = true
+						stateIcon.SetResource(resources.CoffeeIcon)
+						stateIcon.Refresh()
 					}
 
 					tomatoTime = getTomatoTime()
@@ -150,6 +156,7 @@ func StartMainWindow() {
 	buttonsLineLayout.Add(stopButton)
 
 	buttonsLineLayout.Add(layout.NewSpacer())
+	buttonsLineLayout.Add(stateIcon)
 	buttonsLineLayout.Add(timeLabel)
 
 	buttonsLinePadded := container.NewPadded()
@@ -200,4 +207,11 @@ func getNotificationMessage() (string, string) {
 		return "The tomato is complete!", "Take a break."
 	}
 	return "", ""
+}
+
+func getStateIcon() *widget.Icon {
+	if shortPeriod {
+		return widget.NewIcon(resources.CoffeeIcon)
+	}
+	return widget.NewIcon(resources.PencilIcon)
 }
