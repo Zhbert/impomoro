@@ -30,3 +30,5 @@ var TomatoIcon = icons.ResourceTomatoPng
 var PlayIcon = icons.ResourcePlayPng
 var PauseIcon = icons.ResourcePausePng
 var StopIcon = icons.ResourceStopPng
+var PencilIcon = icons.ResourcePencilPng
+var CoffeeIcon = icons.ResourceCoffeePng
