@@ -28,3 +28,9 @@ out
 
 *.DS_Store
 ._*
+
+impomoro
+impomoro.app
+
+fyne-cross
+releases

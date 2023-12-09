@@ -1,0 +1,12 @@
+[Details]
+  Icon = "internal/gui/resources/icons/src/tomato.png"
+  Name = "impomoro"
+  ID = "ru.zhbert.impomoro"
+  Version = "0.1"
+  Build = 86
+
+[Development]
+  HelperText = "This is a simple cross-platform pomodoro timer."
+
+[Release]
+  HelperText = "This is a simple cross-platform pomodoro timer."
