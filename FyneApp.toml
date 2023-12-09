@@ -3,16 +3,10 @@
   Name = "impomoro"
   ID = "ru.zhbert.impomoro"
   Version = "0.1"
-  Build = 3
+  Build = 86
 
 [Development]
   HelperText = "This is a simple cross-platform pomodoro timer."
 
 [Release]
   HelperText = "This is a simple cross-platform pomodoro timer."
-
-[LinuxAndBSD]
-  GenericName = "impomoro"
-  Categories = ["Utilites"]
-  Comment = "This is a simple cross-platform pomodoro timer."
-  Keywords = ["time", "pomorodo"]
