@@ -59,6 +59,12 @@ func DetectConfigFile() {
 			err = os.MkdirAll(configPath, 0777)
 			if err != nil {
 				log.Printf("Can't create config dir: %s\n", configPath)
+			} else {
+				confFilePath := filepath.Join(configPath, fileName)
+				_, err = os.Stat(confFilePath)
+				if err != nil {
+					createDefaultConfig(confFilePath)
+				}
 			}
 		}
 	} else {

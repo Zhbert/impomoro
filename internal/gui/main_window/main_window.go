@@ -39,14 +39,15 @@ import (
 	"time"
 )
 
-var tomatoTime = getTomatoTime()
-var quitChan = make(chan bool)
-var confOpts = config.GetConfigOptions()
 var shortPeriod = false
 
 func StartMainWindow() {
 	application := app.New()
 	application.SetIcon(resources.TomatoIcon)
+
+	confOpts := config.GetConfigOptions()
+	tomatoTime := getTomatoTime()
+	quitChan := make(chan bool)
 
 	stateIcon := getStateIcon()
 
@@ -193,6 +194,7 @@ func StartMainWindow() {
 }
 
 func getTomatoTime() int {
+	confOpts := config.GetConfigOptions()
 	if shortPeriod {
 		return confOpts.Time.ShortTime * 60
 	}
