@@ -24,48 +24,8 @@
 
 package config
 
-import (
-	"bytes"
-	"image"
-	"image/png"
-	"impomoro/internal/gui/resources/icons"
-	"log"
-	"os"
-	"os/user"
-	"path/filepath"
+const (
+	folderName   = ".impomoro"
+	fileName     = "config.yml"
+	iconFileName = "tomato.png"
 )
-
-func CreateMainIcon() {
-	usr, err := user.Current()
-	if err != nil {
-		log.Fatal(err)
-	}
-	configPath := filepath.Join(usr.HomeDir, folderName)
-	_, err = os.Stat(configPath)
-	if err != nil {
-		DetectConfigFile()
-	} else {
-		pathToFile := filepath.Join(configPath, iconFileName)
-
-		img, _, err := image.Decode(bytes.NewReader(icons.ResourceTomatoPng.StaticContent))
-		if err != nil {
-			log.Fatalln(err)
-		}
-
-		out, _ := os.Create(pathToFile)
-		defer out.Close()
-
-		err = png.Encode(out, img)
-		if err != nil {
-			log.Println(err)
-		}
-	}
-}
-
-func GetIconPath() string {
-	usr, err := user.Current()
-	if err != nil {
-		log.Fatal(err)
-	}
-	return filepath.Join(usr.HomeDir, folderName, iconFileName)
-}
