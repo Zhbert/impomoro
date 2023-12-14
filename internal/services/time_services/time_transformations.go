@@ -26,6 +26,10 @@ package time_services
 
 import "fmt"
 
+/******************************************************************************
+* Converting seconds to minutes
+******************************************************************************/
+
 func SecondsToMinutes(inSeconds int) string {
 	minutes := inSeconds / 60
 	seconds := inSeconds % 60

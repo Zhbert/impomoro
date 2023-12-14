@@ -35,6 +35,11 @@ import (
 	"path/filepath"
 )
 
+/******************************************************************************
+* Creating an icon in a directory with configuration files from application
+* resources
+******************************************************************************/
+
 func CreateMainIcon() {
 	usr, err := user.Current()
 	if err != nil {
@@ -61,6 +66,10 @@ func CreateMainIcon() {
 		}
 	}
 }
+
+/******************************************************************************
+* Getting the path to the icon file in the directory with the configuration file
+******************************************************************************/
 
 func GetIconPath() string {
 	usr, err := user.Current()

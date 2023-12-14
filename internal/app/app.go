@@ -27,11 +27,13 @@ package app
 import (
 	"impomoro/internal/gui/main_window"
 	"impomoro/internal/services/config"
-	"log"
 )
 
+/******************************************************************************
+* Application launch function
+******************************************************************************/
+
 func Run() {
-	log.Println("The application has started")
 	config.DetectConfigFile()
 	config.CreateMainIcon()
 	main_window.StartMainWindow()

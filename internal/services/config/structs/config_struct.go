@@ -24,6 +24,10 @@
 
 package structs
 
+/******************************************************************************
+* The structure of the configuration file
+******************************************************************************/
+
 type ConfigOptions struct {
 	Display struct {
 		Width  int `yaml:"width"`
@@ -33,4 +37,7 @@ type ConfigOptions struct {
 		LongTime  int `yaml:"longTime"`
 		ShortTime int `yaml:"shortTime"`
 	} `yaml:"time"`
+	System struct {
+		EnableTray bool `yaml:"enableTray"`
+	} `yaml:"system"`
 }

@@ -34,6 +34,10 @@ import (
 	"net/url"
 )
 
+/******************************************************************************
+* Window content generation function
+******************************************************************************/
+
 func getContent() fyne.CanvasObject {
 	verticalLayout := container.NewVBox()
 
@@ -60,6 +64,10 @@ func getContent() fyne.CanvasObject {
 
 	return verticalLayout
 }
+
+/******************************************************************************
+* Displaying the dialog box
+******************************************************************************/
 
 func ShowHelpWindow(win *fyne.Window) {
 	dialog.ShowCustom("About", "OK", getContent(), *win)

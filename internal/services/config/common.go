@@ -24,6 +24,10 @@
 
 package config
 
+/******************************************************************************
+* Common constants with resource paths
+******************************************************************************/
+
 const (
 	folderName   = ".impomoro"
 	fileName     = "config.yml"
