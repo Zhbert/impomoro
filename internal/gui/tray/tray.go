@@ -29,6 +29,10 @@ import (
 	"fyne.io/fyne/v2/driver/desktop"
 )
 
+/******************************************************************************
+* Launching and displaying the tray
+******************************************************************************/
+
 func MakeTray(a fyne.App, w fyne.Window) {
 	if desk, ok := a.(desktop.App); ok {
 		showItem := fyne.NewMenuItem("Show", func() {

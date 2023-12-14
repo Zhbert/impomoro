@@ -42,6 +42,10 @@ import (
 
 var shortPeriod = false
 
+/******************************************************************************
+* Generating and displaying the main window
+******************************************************************************/
+
 func StartMainWindow() {
 	application := app.New()
 	application.SetIcon(resources.TomatoIcon)

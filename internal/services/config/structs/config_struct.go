@@ -24,6 +24,10 @@
 
 package structs
 
+/******************************************************************************
+* The structure of the configuration file
+******************************************************************************/
+
 type ConfigOptions struct {
 	Display struct {
 		Width  int `yaml:"width"`

@@ -30,6 +30,10 @@ import (
 	"log"
 )
 
+/******************************************************************************
+* Displaying the system notification
+******************************************************************************/
+
 func ShowNotification(title string, message string) {
 	err := beeep.Notify(title, message, config.GetIconPath())
 	if err != nil {

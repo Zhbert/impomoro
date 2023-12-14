@@ -26,6 +26,10 @@ package resources
 
 import "impomoro/internal/gui/resources/icons"
 
+/******************************************************************************
+* Application Icon Resources
+******************************************************************************/
+
 var TomatoIcon = icons.ResourceTomatoPng
 var PlayIcon = icons.ResourcePlayPng
 var PauseIcon = icons.ResourcePausePng
