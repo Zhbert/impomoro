@@ -33,4 +33,7 @@ type ConfigOptions struct {
 		LongTime  int `yaml:"longTime"`
 		ShortTime int `yaml:"shortTime"`
 	} `yaml:"time"`
+	System struct {
+		EnableTray bool `yaml:"enableTray"`
+	} `yaml:"system"`
 }

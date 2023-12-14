@@ -99,6 +99,9 @@ func getDefaultConfigStruct() structs.ConfigOptions {
 			LongTime  int
 			ShortTime int
 		}{LongTime: 25, ShortTime: 5}),
+		System: struct {
+			EnableTray bool `yaml:"enableTray"`
+		}(struct{ EnableTray bool }{EnableTray: false}),
 	}
 }
 
