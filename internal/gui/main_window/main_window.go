@@ -44,6 +44,7 @@ var shortPeriod = false
 func StartMainWindow() {
 	application := app.New()
 	application.SetIcon(resources.TomatoIcon)
+	application.Settings().SetTheme(theme.DarkTheme())
 
 	confOpts := config.GetConfigOptions()
 	tomatoTime := getTomatoTime()
