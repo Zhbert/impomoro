@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ver='0.1'
+ver='v.0.1'
 
 echo "Cleaning packages..."
 rm -rf ./releases

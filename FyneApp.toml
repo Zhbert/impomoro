@@ -3,7 +3,7 @@
   Name = "impomoro"
   ID = "ru.zhbert.impomoro"
   Version = "0.1"
-  Build = 97
+  Build = 108
 
 [Development]
   HelperText = "This is a simple cross-platform pomodoro timer."
