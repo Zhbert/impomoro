@@ -30,7 +30,7 @@ The utility is built for the following operating systems:
 
 ## Configuration
 
-The configuration is stored in a YAML configuration file located in the user's home directory in the `.impomoro` directory. For example, in Linux systems it will be `~/home/user/.impomoro`.
+The configuration is stored in a YAML configuration file located in the user's home directory in the `.impomoro` directory. For example, in Linux systems it will be `~/.impomoro`.
 
 The first time you run it, a configuration file with default settings is created in the directory. Also, an icon file is generated next to it, which is used to display system notifications.
 
